@@ -8,9 +8,12 @@
 
 #import "CoilScrollPageView.h"
 #import "UIContentViewCell.h"
-
+#pragma mark -
+#pragma mark - _CoilTableView
 @interface _CoilTableView : UITableView
 @property (nonatomic, copy) void(^layoutSubviewsCallBack)();
+//@property (nonatomic, copy) void(^setContentOffsetCallBack)();
+
 @end
 
 @implementation _CoilTableView
@@ -20,9 +23,15 @@
     }
     [super layoutSubviews];
 }
+//-(void)setContentOffset:(CGPoint)contentOffset {
+//    [super setContentOffset:contentOffset];
+//    if (self.setContentOffsetCallBack) {
+//        self.setContentOffsetCallBack();
+//    }
+//}
 @end
-
-
+#pragma mark -
+#pragma mark - CoilScrollPageView
 @interface CoilScrollPageView () <UITableViewDelegate, UITableViewDataSource>
 
 @property (nonatomic, retain) _CoilTableView *tableView;
@@ -92,6 +101,15 @@
 -(void)tableViewLayoutSubviews {
     [self resetTableViewContentOffsetIfNeeded];
 }
+//-(void)tableViewSetContentOffset {
+//    NSUInteger n = self.tableView.contentOffset.y / self.tableView.bounds.size.height;
+//    CGFloat offset = self.tableView.contentOffset.y - self.tableView.bounds.size.height*n;
+//    if (offset <= 0.0000001) {
+//        printf("changePage\n");
+//    }
+//}
+
+#pragma mark - Get Set
 
 -(UIView *)panelView {
     if (!_panelView) {
@@ -131,6 +149,9 @@
         _tableView.layoutSubviewsCallBack = ^(){
             [wself tableViewLayoutSubviews];
         };
+//        _tableView.setContentOffsetCallBack = ^(){
+//            [wself tableViewSetContentOffset];
+//        };
         [self addSubview:_tableView];
         _tableView.translatesAutoresizingMaskIntoConstraints = NO;
         
@@ -186,19 +207,13 @@
 }
 
 -(NSUInteger)currentPageIndex_outer {
-    return self.coilScrolling ? self.currentPageIndex_inner % self.cellCount_inner : self.currentPageIndex_inner;
+    return self.coilScrolling ? self.currentPageIndex_inner % self.cellCount_outer : self.currentPageIndex_inner;
 }
 
 -(NSUInteger)currentPageIndex {
     return self.currentPageIndex_outer;
 }
 
--(void)updatePanelViewLayputWithSpace:(CGFloat)space isH:(BOOL)isH {
-    self.panelView_CT.constant = isH?0:-space;
-    self.panelView_CB.constant = isH?0:space;
-    self.panelView_CL.constant = isH?-space:0;
-    self.panelView_CR.constant = isH?space:0;
-}
 
 #pragma mark - UITableViewDataSource
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -267,6 +282,23 @@
     view.hidden = YES;
 }
 
+//-(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+//    printf("scrollViewDidEndDecelerating\n");
+//}
+//
+//- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView{
+//    printf("scrollViewDidEndScrollingAnimation\n");
+//}
+
+#pragma mark -
+
+-(void)updatePanelViewLayputWithSpace:(CGFloat)space isH:(BOOL)isH {
+    self.panelView_CT.constant = isH?0:-space;
+    self.panelView_CB.constant = isH?0:space;
+    self.panelView_CL.constant = isH?-space:0;
+    self.panelView_CR.constant = isH?space:0;
+}
+
 - (void)reloadData {
     if ([self.dataSource respondsToSelector:@selector(cellSpaceInScrollPageView:)]) {
         NSUInteger cellSpace_outer = ABS([self.dataSource cellSpaceInScrollPageView:self]);
@@ -283,40 +315,61 @@
     if (pageIndex >= self.cellCount_outer) {
         return;
     }
-    NSUInteger oldInterval_l = self.currentPageIndex_outer;
-    NSUInteger oldInterval_r = self.cellCount_outer - oldInterval_l-1;
     
-    NSUInteger newInterval_l = pageIndex;
-    NSUInteger newInterval_r = self.cellCount_outer - newInterval_l-1;
-    
-    NSUInteger interval_l = oldInterval_l + newInterval_r;
-    NSUInteger interval_r = oldInterval_r + newInterval_l;
-    
-    NSInteger interval_outer = pageIndex - self.currentPageIndex_outer - 1;
-    
-    if (interval_outer >= 0) {//to r
-        interval_r =  MIN(interval_outer, interval_r);
-    }else {//to l
-        interval_l =  MIN(-interval_outer, interval_l);
+    NSInteger offset = pageIndex - self.currentPageIndex_outer;
+    if (offset<0) {
+        offset = -offset;
+    }
+    NSInteger interval1 = offset-1;//间隔1
+    NSInteger interval2 = self.cellCount_outer-offset-1;//间隔2
+    NSUInteger nIndex1_inner = 0;
+    NSUInteger nIndex2_inner = 0;
+    NSInteger n;
+    n = self.currentPageIndex_inner + interval1 + 1;
+    if (n%self.cellCount_outer == pageIndex) {
+        nIndex1_inner = n;
+    }
+    n = self.currentPageIndex_inner - interval1 - 1;
+    if (n%self.cellCount_outer == pageIndex) {
+        nIndex1_inner = n;
+    }
+    n = self.currentPageIndex_inner + interval2 + 1;
+    if (n%self.cellCount_outer == pageIndex) {
+        nIndex2_inner = n;
+    }
+    n = self.currentPageIndex_inner - interval2 - 1;
+    if (n%self.cellCount_outer == pageIndex) {
+        nIndex2_inner = n;
+    }
+
+    NSInteger offset1 = nIndex1_inner - self.currentPageIndex_inner;
+    if (offset1 < 0) {
+        offset1 = -offset1;
+    }
+    NSInteger offset2 = nIndex2_inner - self.currentPageIndex_inner;
+    if (offset2 < 0) {
+        offset2 = -offset2;
+    }
+    NSUInteger nIndex_inner = nIndex1_inner;
+    if (offset1 >= offset2) {
+        nIndex_inner = nIndex2_inner;
     }
     
-    NSUInteger nIndex_inner;
-    if (interval_r <= interval_l) {
-        nIndex_inner = self.currentPageIndex_inner+interval_r+1;
-    }else {
-        nIndex_inner = self.currentPageIndex_inner-interval_l-1;
-    }
     [self.tableView  scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:nIndex_inner] atScrollPosition:UITableViewScrollPositionMiddle animated:animated];
 }
 
 - (void)scrollToLastPageWithAnimated:(BOOL)animated {
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:self.currentPageIndex_inner-1];
-    [self.tableView  scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:animated];
+    NSInteger lastPage = (self.currentPageIndex_outer + self.cellCount_outer - 1)%self.cellCount_outer;
+    [self scrollToPageAtIndex:lastPage animated:animated];
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:self.currentPageIndex_inner-1];
+//    [self.tableView  scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:animated];
 }
 
 - (void)scrollToNextPageWithAnimated:(BOOL)animated {
-    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:self.currentPageIndex_inner+1];
-    [self.tableView  scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:animated];
+    NSInteger nextPage = (self.currentPageIndex_outer + 1)%self.cellCount_outer;
+    [self scrollToPageAtIndex:nextPage animated:animated];
+//    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:self.currentPageIndex_inner+1];
+//    [self.tableView  scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:animated];
 }
 
 @end
