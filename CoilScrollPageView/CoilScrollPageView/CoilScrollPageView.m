@@ -315,59 +315,76 @@
     if (pageIndex >= self.cellCount_outer) {
         return;
     }
-    
-    NSInteger offset = pageIndex - self.currentPageIndex_outer;
-    if (offset<0) {
-        offset = -offset;
-    }
-    NSInteger interval1 = offset-1;//间隔1
-    NSInteger interval2 = self.cellCount_outer-offset-1;//间隔2
-    NSUInteger nIndex1_inner = 0;
-    NSUInteger nIndex2_inner = 0;
-    NSInteger n;
-    n = self.currentPageIndex_inner + interval1 + 1;
-    if (n%self.cellCount_outer == pageIndex) {
-        nIndex1_inner = n;
-    }
-    n = self.currentPageIndex_inner - interval1 - 1;
-    if (n%self.cellCount_outer == pageIndex) {
-        nIndex1_inner = n;
-    }
-    n = self.currentPageIndex_inner + interval2 + 1;
-    if (n%self.cellCount_outer == pageIndex) {
-        nIndex2_inner = n;
-    }
-    n = self.currentPageIndex_inner - interval2 - 1;
-    if (n%self.cellCount_outer == pageIndex) {
-        nIndex2_inner = n;
-    }
-
-    NSInteger offset1 = nIndex1_inner - self.currentPageIndex_inner;
-    if (offset1 < 0) {
-        offset1 = -offset1;
-    }
-    NSInteger offset2 = nIndex2_inner - self.currentPageIndex_inner;
-    if (offset2 < 0) {
-        offset2 = -offset2;
-    }
-    NSUInteger nIndex_inner = nIndex1_inner;
-    if (offset1 >= offset2) {
-        nIndex_inner = nIndex2_inner;
+    NSUInteger nIndex_inner = pageIndex;
+    if (self.coilScrolling) {
+        NSInteger offset = pageIndex - self.currentPageIndex_outer;
+        if (offset<0) {
+            offset = -offset;
+        }
+        NSInteger interval1 = offset-1;//间隔1
+        NSInteger interval2 = self.cellCount_outer-offset-1;//间隔2
+        NSUInteger nIndex1_inner = 0;
+        NSUInteger nIndex2_inner = 0;
+        NSInteger n;
+        n = self.currentPageIndex_inner + interval1 + 1;
+        if (n%self.cellCount_outer == pageIndex) {
+            nIndex1_inner = n;
+        }
+        n = self.currentPageIndex_inner - interval1 - 1;
+        if (n%self.cellCount_outer == pageIndex) {
+            nIndex1_inner = n;
+        }
+        n = self.currentPageIndex_inner + interval2 + 1;
+        if (n%self.cellCount_outer == pageIndex) {
+            nIndex2_inner = n;
+        }
+        n = self.currentPageIndex_inner - interval2 - 1;
+        if (n%self.cellCount_outer == pageIndex) {
+            nIndex2_inner = n;
+        }
+        
+        NSInteger offset1 = nIndex1_inner - self.currentPageIndex_inner;
+        if (offset1 < 0) {
+            offset1 = -offset1;
+        }
+        NSInteger offset2 = nIndex2_inner - self.currentPageIndex_inner;
+        if (offset2 < 0) {
+            offset2 = -offset2;
+        }
+        if (offset1 >= offset2) {
+            nIndex_inner = nIndex2_inner;
+        }else {
+            nIndex_inner = nIndex1_inner;
+        }
     }
     
     [self.tableView  scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:nIndex_inner] atScrollPosition:UITableViewScrollPositionMiddle animated:animated];
 }
 
 - (void)scrollToLastPageWithAnimated:(BOOL)animated {
-    NSInteger lastPage = (self.currentPageIndex_outer + self.cellCount_outer - 1)%self.cellCount_outer;
-    [self scrollToPageAtIndex:lastPage animated:animated];
+    NSInteger lastPage = self.currentPageIndex_outer - 1;
+    if (self.coilScrolling) {
+        lastPage = (lastPage + self.cellCount_outer)%self.cellCount_outer;
+        [self scrollToPageAtIndex:lastPage animated:animated];
+    }else {
+        if (lastPage >= 0) {
+            [self scrollToPageAtIndex:lastPage animated:animated];
+        }
+    }
 //    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:self.currentPageIndex_inner-1];
 //    [self.tableView  scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:animated];
 }
 
 - (void)scrollToNextPageWithAnimated:(BOOL)animated {
-    NSInteger nextPage = (self.currentPageIndex_outer + 1)%self.cellCount_outer;
-    [self scrollToPageAtIndex:nextPage animated:animated];
+    NSInteger nextPage =self.currentPageIndex_outer + 1;
+     if (self.coilScrolling) {
+        nextPage = nextPage%self.cellCount_outer;
+        [self scrollToPageAtIndex:nextPage animated:animated];
+     }else {
+         if (nextPage < self.cellCount_outer) {
+             [self scrollToPageAtIndex:nextPage animated:animated];
+         }
+     }
 //    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:self.currentPageIndex_inner+1];
 //    [self.tableView  scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionMiddle animated:animated];
 }
