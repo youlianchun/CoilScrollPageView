@@ -292,6 +292,14 @@
     NSUInteger interval_l = oldInterval_l + newInterval_r;
     NSUInteger interval_r = oldInterval_r + newInterval_l;
     
+    NSInteger interval_outer = pageIndex - self.currentPageIndex_outer - 1;
+    
+    if (interval_outer >= 0) {//to r
+        interval_r =  MIN(interval_outer, interval_r);
+    }else {//to l
+        interval_l =  MIN(-interval_outer, interval_l);
+    }
+    
     NSUInteger nIndex_inner;
     if (interval_r <= interval_l) {
         nIndex_inner = self.currentPageIndex_inner+interval_r+1;
