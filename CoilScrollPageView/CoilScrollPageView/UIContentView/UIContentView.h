@@ -9,8 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface UIContentView : UIView
-
-
 /**
  清空所有子视图
  */

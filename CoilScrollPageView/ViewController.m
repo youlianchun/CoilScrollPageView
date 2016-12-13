@@ -52,6 +52,7 @@
     if (!isReuse) {
         UIImageView *imageView = [[UIImageView alloc]initWithFrame:contentView.bounds];
         [contentView addSubview:imageView];
+        UIView *v = imageView.superview;
         UIImage *img = [UIImage imageNamed:[NSString stringWithFormat:@"h%ld.jpg",pageIndex]];
         imageView.image = img;
     }
