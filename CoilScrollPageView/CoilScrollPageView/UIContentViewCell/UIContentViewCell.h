@@ -10,6 +10,6 @@
 #import "UIContentView.h"
 
 @interface UIContentViewCell : UITableViewCell
-@property (nonatomic, readonly) UIContentView *view;
+@property (nonatomic, readonly) UIContentView *contentView;
 
 @end

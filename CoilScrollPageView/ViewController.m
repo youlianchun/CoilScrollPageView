@@ -48,14 +48,18 @@
     return 40;
 }
 - (void)scrollPageView:(CoilScrollPageView*)scrollPageView cellContentView:(UIContentView*)contentView atPageIndex:(NSUInteger)pageIndex isReuse:(BOOL)isReuse {
-//    contentView.backgroundColor = [UIColor whiteColor];
     if (!isReuse) {
         UIImageView *imageView = [[UIImageView alloc]initWithFrame:contentView.bounds];
         [contentView addSubview:imageView];
-        UIView *v = imageView.superview;
         UIImage *img = [UIImage imageNamed:[NSString stringWithFormat:@"h%ld.jpg",pageIndex]];
         imageView.image = img;
+        UIButton *but = [[UIButton alloc]initWithFrame:CGRectMake(300, 500, 100, 100)];
+        [but setTitle:@"but" forState:UIControlStateNormal];
+        [but addTarget:self action:@selector(butAction) forControlEvents:UIControlEventTouchUpInside];
+        [contentView addSubview:but];
     }
 }
-
+-(void)butAction {
+    NSLog(@"but");
+}
 @end

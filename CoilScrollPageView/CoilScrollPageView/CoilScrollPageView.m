@@ -238,14 +238,15 @@
         cell.backgroundColor = [UIColor colorWithWhite:1 alpha:0.3];
         cell.opaque = self.opaque;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.view.bounds = self.bounds;
+        cell.contentView.bounds = self.bounds;
+        cell.contentView.backgroundColor = [UIColor redColor];
     }
     cell.transform = CGAffineTransformIdentity;
     if (self.horizontalScrolling) {
         cell.transform = CGAffineTransformMakeRotation(M_PI/2);
     }
     if (!self.pageChange) {//pageChange YES 时候是上一页跳转过来的同cell，不进执行代理，不限制时在切页时候会执行两次代理
-        [self.dataSource scrollPageView:self cellContentView:cell.view atPageIndex:pageIndex isReuse:isReuse];
+        [self.dataSource scrollPageView:self cellContentView:cell.contentView atPageIndex:pageIndex isReuse:isReuse];
     }
     return cell;
 }
@@ -267,13 +268,13 @@
 
 -(void)tableView:(UITableView *)tableView willDisplayCell:(UIContentViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(scrollPageView:willDisplayPage:atPageIndex:)]) {
-        [self.delegate scrollPageView:self willDisplayPage:cell.view atPageIndex:indexPath.section];
+        [self.delegate scrollPageView:self willDisplayPage:cell.contentView atPageIndex:indexPath.section];
     }
 }
 
 -(void)tableView:(UITableView *)tableView didEndDisplayingCell:(UIContentViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     if ([self.delegate respondsToSelector:@selector(scrollPageView:didEndDisplayingPage:atPageIndex:)]) {
-        [self.delegate scrollPageView:self didEndDisplayingPage:cell.view atPageIndex:indexPath.section];
+        [self.delegate scrollPageView:self didEndDisplayingPage:cell.contentView atPageIndex:indexPath.section];
     }
 }
 
