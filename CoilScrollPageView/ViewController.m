@@ -42,13 +42,19 @@
 }
 
 - (NSUInteger)numberOfPageInScrollPageView:(CoilScrollPageView*)scrollPageView {
-    return 3;
+    return 4;
 }
 -(CGFloat)cellSpaceInScrollPageView:(CoilScrollPageView *)scrollPageView {
     return 40;
 }
 - (void)scrollPageView:(CoilScrollPageView*)scrollPageView cellContentView:(UIContentView*)contentView atPageIndex:(NSUInteger)pageIndex isReuse:(BOOL)isReuse {
-    contentView.backgroundColor = [UIColor whiteColor];
+//    contentView.backgroundColor = [UIColor whiteColor];
+    if (!isReuse) {
+        UIImageView *imageView = [[UIImageView alloc]initWithFrame:contentView.bounds];
+        [contentView addSubview:imageView];
+        UIImage *img = [UIImage imageNamed:[NSString stringWithFormat:@"h%ld.jpg",pageIndex]];
+        imageView.image = img;
+    }
 }
 
 @end

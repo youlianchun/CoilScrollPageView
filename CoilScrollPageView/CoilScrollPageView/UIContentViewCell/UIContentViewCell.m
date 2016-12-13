@@ -27,7 +27,7 @@
 
 -(UIContentView *)view {
     if (!_view) {
-        _view = [[UIContentView alloc]init];
+        _view = [[UIContentView alloc] init];
         _view.backgroundColor = [UIColor clearColor];
         _view.opaque = NO;
         [self.contentView addSubview:_view];
@@ -36,6 +36,7 @@
         [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:_view attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1 constant:0]];
         [self.contentView addConstraint: [NSLayoutConstraint constraintWithItem:_view attribute:NSLayoutAttributeTop relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeTop multiplier:1 constant:0]];
         [self.contentView addConstraint: [NSLayoutConstraint constraintWithItem:_view attribute:NSLayoutAttributeBottom relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeBottom multiplier:1 constant:0]];
+        
     }
     return _view;
 }

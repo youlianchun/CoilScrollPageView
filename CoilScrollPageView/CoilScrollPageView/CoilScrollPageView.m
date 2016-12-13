@@ -18,10 +18,10 @@
 
 @implementation _CoilTableView
 - (void)layoutSubviews {
+    [super layoutSubviews];
     if (self.layoutSubviewsCallBack) {
         self.layoutSubviewsCallBack();
     }
-    [super layoutSubviews];
 }
 //-(void)setContentOffset:(CGPoint)contentOffset {
 //    [super setContentOffset:contentOffset];
@@ -223,7 +223,9 @@
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 1;
 }
-
+//-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return tableView.rowHeight;
+//}
 - (UITableViewCell*)tableView:(UITableView*)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 
     NSUInteger pageIndex = [self morphedIndexForIndexPath:indexPath actualCellCount:self.cellCount_outer];
@@ -236,6 +238,7 @@
         cell.backgroundColor = [UIColor colorWithWhite:1 alpha:0.3];
         cell.opaque = self.opaque;
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.view.bounds = self.bounds;
     }
     cell.transform = CGAffineTransformIdentity;
     if (self.horizontalScrolling) {

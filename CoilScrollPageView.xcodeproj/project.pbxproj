@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A92127D71DFF8FED002603C1 /* h1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A92127D31DFF8FED002603C1 /* h1.jpg */; };
+		A92127D81DFF8FED002603C1 /* h2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A92127D41DFF8FED002603C1 /* h2.jpg */; };
+		A92127D91DFF8FED002603C1 /* h3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A92127D51DFF8FED002603C1 /* h3.jpg */; };
+		A92127DA1DFF8FED002603C1 /* h0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = A92127D61DFF8FED002603C1 /* h0.jpg */; };
 		A93D20CA1DFCEFA600E606CB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D20C91DFCEFA600E606CB /* main.m */; };
 		A93D20CD1DFCEFA600E606CB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D20CC1DFCEFA600E606CB /* AppDelegate.m */; };
 		A93D20D01DFCEFA600E606CB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A93D20CF1DFCEFA600E606CB /* ViewController.m */; };
@@ -19,6 +23,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A92127D31DFF8FED002603C1 /* h1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = h1.jpg; sourceTree = "<group>"; };
+		A92127D41DFF8FED002603C1 /* h2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = h2.jpg; sourceTree = "<group>"; };
+		A92127D51DFF8FED002603C1 /* h3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = h3.jpg; sourceTree = "<group>"; };
+		A92127D61DFF8FED002603C1 /* h0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = h0.jpg; sourceTree = "<group>"; };
 		A93D20C51DFCEFA600E606CB /* CoilScrollPageView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoilScrollPageView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A93D20C91DFCEFA600E606CB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A93D20CB1DFCEFA600E606CB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -84,6 +92,10 @@
 		A93D20C81DFCEFA600E606CB /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				A92127D61DFF8FED002603C1 /* h0.jpg */,
+				A92127D31DFF8FED002603C1 /* h1.jpg */,
+				A92127D41DFF8FED002603C1 /* h2.jpg */,
+				A92127D51DFF8FED002603C1 /* h3.jpg */,
 				A93D20C91DFCEFA600E606CB /* main.m */,
 			);
 			name = "Supporting Files";
@@ -177,8 +189,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A92127D81DFF8FED002603C1 /* h2.jpg in Resources */,
 				A93D20D81DFCEFA600E606CB /* LaunchScreen.storyboard in Resources */,
+				A92127D91DFF8FED002603C1 /* h3.jpg in Resources */,
 				A93D20D51DFCEFA600E606CB /* Assets.xcassets in Resources */,
+				A92127DA1DFF8FED002603C1 /* h0.jpg in Resources */,
+				A92127D71DFF8FED002603C1 /* h1.jpg in Resources */,
 				A93D20D31DFCEFA600E606CB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

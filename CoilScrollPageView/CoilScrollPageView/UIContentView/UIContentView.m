@@ -29,8 +29,9 @@
 
 -(UIView *)contentView {
     if (!_contentView) {
-        _contentView = [[UIView alloc]initWithFrame:self.bounds];
+        _contentView = [[UIView alloc]init];
         _contentView.backgroundColor = [UIColor clearColor];
+
         _contentView.opaque = NO;
         [super addSubview:_contentView];
         _contentView.translatesAutoresizingMaskIntoConstraints = NO;
